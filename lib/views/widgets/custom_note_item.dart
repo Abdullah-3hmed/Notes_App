@@ -30,7 +30,7 @@ class NoteItem extends StatelessWidget {
                 'Something should be here',
                 style: TextStyle(
                   color: Colors.black.withOpacity(.5),
-                  fontSize: 20.0,
+                  fontSize: 18.0,
                 ),
               ),
             ),
