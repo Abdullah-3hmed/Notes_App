@@ -15,3 +15,5 @@ class AddNoteErrorState extends NotesStates {
 }
 
 class GetNotesSuccessState extends NotesStates {}
+
+class NotesChangeColorState extends NotesStates {}

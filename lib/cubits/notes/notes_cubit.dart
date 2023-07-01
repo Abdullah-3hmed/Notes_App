@@ -10,10 +10,11 @@ class NotesCubit extends Cubit<NotesStates> {
   NotesCubit() : super(AddNoteInitialState());
 
   static NotesCubit get(context) => BlocProvider.of(context);
-
+  Color color = const Color(0xffE88D67);
   Future<void> addNote(NoteModel note) async {
     emit(AddNoteLoadingState());
     try {
+      note.color = color.value;
       Hive.box<NoteModel>(notesBox).add(note).then((_) {
         getNotes();
       });
@@ -30,5 +31,9 @@ class NotesCubit extends Cubit<NotesStates> {
     notes = [];
     notes = Hive.box<NoteModel>(notesBox).values.toList();
     emit(GetNotesSuccessState());
+  }
+
+  void changeColor() {
+    emit(NotesChangeColorState());
   }
 }

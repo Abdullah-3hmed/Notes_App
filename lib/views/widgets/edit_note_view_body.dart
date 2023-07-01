@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notes_app/components.dart';
 import 'package:notes_app/cubits/notes/notes_cubit.dart';
 import 'package:notes_app/models/note_model.dart';
+import 'package:notes_app/views/widgets/colors_list_view.dart';
 import 'package:notes_app/views/widgets/custom_app_bar.dart';
 import 'package:notes_app/views/widgets/custom_text_form_field.dart';
 
@@ -55,7 +58,62 @@ class _EditNoteViewBodyState extends State<EditNoteViewBody> {
               content = value;
             },
           ),
+          const SizedBox(
+            height: 20.0,
+          ),
+          EditNoteColorsList(
+            note: widget.note,
+          ),
         ],
+      ),
+    );
+  }
+}
+
+class EditNoteColorsList extends StatefulWidget {
+  const EditNoteColorsList({super.key, required this.note});
+
+  final NoteModel note;
+
+  @override
+  State<EditNoteColorsList> createState() => _EditNoteColorsListState();
+}
+
+class _EditNoteColorsListState extends State<EditNoteColorsList> {
+  late int currentIndex;
+
+  @override
+  void initState() {
+    currentIndex = defaultColorList.indexOf(Color(widget.note.color));
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 80.0,
+      child: BlocBuilder<NotesCubit, NotesStates>(
+        builder: (context, state) {
+          return ListView.separated(
+            physics: const BouncingScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) => InkWell(
+              onTap: () {
+                currentIndex = index;
+                widget.note.color = defaultColorList[index].value;
+                NotesCubit.get(context).changeColor();
+              },
+              child: ColorItem(
+                isSelected: currentIndex == index,
+                color: defaultColorList[index],
+              ),
+            ),
+            separatorBuilder: (context, index) => const SizedBox(
+              width: 10.0,
+            ),
+            itemCount: defaultColorList.length,
+          );
+        },
       ),
     );
   }
