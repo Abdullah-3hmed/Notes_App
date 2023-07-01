@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:notes_app/cubits/notes/notes_cubit.dart';
 import 'package:notes_app/models/note_model.dart';
 import 'package:notes_app/views/edit_note_view.dart';
 
@@ -14,7 +15,11 @@ class NoteItem extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const EditNoteView()),
+          MaterialPageRoute(
+            builder: (context) => EditNoteView(
+              note: note,
+            ),
+          ),
         );
       },
       child: Container(
@@ -51,7 +56,10 @@ class NoteItem extends StatelessWidget {
                   color: Colors.black,
                   size: 24.0,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  note.delete();
+                  NotesCubit.get(context).getNotes();
+                },
               ),
             ),
             Text(

@@ -7,17 +7,20 @@ class CustomTextFormField extends StatelessWidget {
     required this.hintTex,
     this.maxLines = 1,
     this.onSaved,
+    this.onChanged,
   });
 
   final String hintTex;
   final int maxLines;
   final void Function(String?)? onSaved;
+  final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       cursorColor: defaultColor,
       onSaved: onSaved,
+      onChanged: onChanged,
       validator: (value) {
         if (value!.isEmpty) {
           return '$hintTex is required';

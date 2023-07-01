@@ -14,7 +14,9 @@ class NotesCubit extends Cubit<NotesStates> {
   Future<void> addNote(NoteModel note) async {
     emit(AddNoteLoadingState());
     try {
-      Hive.box<NoteModel>(notesBox).add(note);
+      Hive.box<NoteModel>(notesBox).add(note).then((_) {
+        getNotes();
+      });
       emit(AddNoteSuccessState());
     } catch (error) {
       debugPrint(error.toString());
@@ -27,5 +29,6 @@ class NotesCubit extends Cubit<NotesStates> {
   void getNotes() {
     notes = [];
     notes = Hive.box<NoteModel>(notesBox).values.toList();
+    emit(GetNotesSuccessState());
   }
 }
